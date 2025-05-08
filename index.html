@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+<title>Kuis: Prinsip Dasar Desain & Komunikasi</title>
+<style>
+  /* Reset and base */
+  * {
+    box-sizing: border-box;
+  }
+  body {
+    margin: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    overflow: hidden;
+  }
+  #app {
+    background: #1e1e2f;
+    width: 100%;
+    max-width: 350px;
+    height: 600px;
+    border-radius: 15px;
+    box-shadow: 0 10px 35px rgba(0,0,0,0.3);
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    position: relative;
+  }
+  h1, h2 {
+    margin: 0 0 15px 0;
+    text-align: center;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+  }
+  .start-btn, .nav-btn, .restart-btn {
+    cursor: pointer;
+    background: #764ba2;
+    border: none;
+    color: #fff;
+    padding: 12px 20px;
+    font-size: 1.2rem;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(118,75,162,0.6);
+    transition: background 0.3s ease, box-shadow 0.3s ease;
+    width: 100%;
+    margin-top: 15px;
+  }
+  .start-btn:hover, .nav-btn:hover, .restart-btn:hover {
+    background: #8563c6;
+    box-shadow: 0 6px 25px rgba(133,99,198,0.8);
+  }
+  #question-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+  }
+  #question {
+    font-size: 1.3rem;
+    font-weight: 600;
+    margin-bottom: 15px;
+  }
+  #choices {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .choice-btn {
+    background: #3a3a5a;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 10px;
+    color: #dcdcdc;
+    font-size: 1.1rem;
+    text-align: left;
+    box-shadow: 0 4px 15px rgba(58,58,90,0.6);
+    transition: background 0.25s ease;
+    cursor: pointer;
+    user-select: none;
+  }
+  .choice-btn:hover {
+    background: #575778;
+    color: #fff;
+  }
+  .choice-btn.selected {
+    background: #764ba2;
+    color: white;
+    font-weight: 700;
+    box-shadow: 0 0 10px 2px #a48be9;
+  }
+  #nav-buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+  }
+  .nav-btn {
+    width: 48%;
+  }
+  #score-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  #score-text {
+    font-size: 1.6rem;
+    font-weight: 700;
+    margin-bottom: 20px;
+    color: #ffd700;
+    text-shadow: 0 0 6px #ffd700aa;
+  }
+  #feedback-text {
+    font-size: 1.1rem;
+    color: #ddd;
+    padding: 0 15px;
+    text-align: center;
+  }
+
+  #copyright {
+    font-size: 0.8rem;
+    color: #7a6f99;
+    text-align: center;
+    margin-top: 12px;
+    user-select: none;
+  }
+
+  /* WhatsApp bubble */
+  #whatsapp-bubble {
+    position: absolute;
+    bottom: 15px;
+    right: 15px;
+    background: #25d366;
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    box-shadow: 0 4px 12px rgba(37, 211, 102, 0.6);
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: background 0.3s ease, box-shadow 0.3s ease;
+    user-select: none;
+  }
+  #whatsapp-bubble:hover {
+    background: #1ebe57;
+    box-shadow: 0 6px 18px rgba(30, 190, 87, 0.8);
+  }
+  #whatsapp-bubble svg {
+    width: 28px;
+    height: 28px;
+    fill: white;
+  }
+
+  /* Responsive for smaller */
+  @media (max-width: 360px) {
+    #app {
+      max-width: 100vw;
+      border-radius: 0;
+      height: 600px;
+      padding: 15px;
+    }
+    h1, h2 {
+      font-size: 1.6rem;
+    }
+    #question {
+      font-size: 1.2rem;
+    }
+    .choice-btn {
+      font-size: 1rem;
+      padding: 8px 12px;
+    }
+    .start-btn, .nav-btn, .restart-btn {
+      font-size: 1rem;
+      padding: 10px 15px;
+    }
+    #whatsapp-bubble {
+      width: 48px;
+      height: 48px;
+      bottom: 12px;
+      right: 12px;
+    }
+    #whatsapp-bubble svg {
+      width: 24px;
+      height: 24px;
+    }
+  }
+</style>
+</head>
+<body>
+  <div id="app">
+    <div id="start-container">
+      <h1>Kuis: Prinsip Dasar Desain & Komunikasi</h1>
+      <p style="text-align:center; font-size:1.1rem; margin-top:-5px; color:#ccc;">
+        Uji pengetahuanmu tentang prinsip desain dan komunikasi!
+      </p>
+      <button class="start-btn" id="start-btn">Mulai Kuis</button>
+    </div>
+
+    <div id="quiz-container" style="display:none; flex-direction: column; height: 100%;">
+      <div id="question-container">
+        <h2 id="question">Teks pertanyaan</h2>
+        <div id="choices"></div>
+      </div>
+      <div id="nav-buttons">
+        <button class="nav-btn" id="prev-btn" disabled>Sebelumnya</button>
+        <button class="nav-btn" id="next-btn" disabled>Berikutnya</button>
+      </div>
+    </div>
+
+    <div id="score-container" style="display:none; flex-direction: column;">
+      <h2>Skor Kamu</h2>
+      <div id="score-text"></div>
+      <div id="feedback-text"></div>
+      <button class="restart-btn" id="restart-btn">Ulang Kuis</button>
+    </div>
+    <div id="copyright">© Raihan Ramadhan 2025</div>
+
+    <a href="https://wa.me/6285814558858" target="_blank" rel="noopener" id="whatsapp-bubble" aria-label="Chat WhatsApp">
+      <svg viewBox="0 0 32 32" aria-hidden="true" focusable="false">
+        <path d="M19.11 17.42a1.99 1.99 0 0 1-1.42-.59l-.1-.1a.994.994 0 0 0-1.35 0l-1.54 1.54a.997.997 0 0 0 0 1.41l.09.09a1.999 1.999 0 0 1-1.41 3.41c-3.42 0-6.24-2.68-6.24-6s2.82-6 6.24-6c3.42 0 6.24 2.68 6.24 6 0 1.59-.8 3-2.13 3.74zM16.44 5c-6.63 0-12 5.37-12 12 0 2.12.64 4.1 1.74 5.8L5 27l4.34-1.02a11.91 11.91 0 0 0 7.09 2.5C22 28.49 27 23.38 27 16.5S22.14 5 16.44 5z"/>
+      </svg>
+    </a>
+  </div>
+
+<script>
+  const questions = [
+    {
+      question: "Apa prinsip 'Kontras' dalam desain?",
+      choices: [
+        "Menggunakan perbedaan warna, bentuk, atau ukuran untuk menarik perhatian visual.",
+        "Membuat semua elemen sama ukuran dan warnanya.",
+        "Menempatkan objek secara acak tanpa urutan.",
+        "Menggunakan warna hanya hitam dan putih."
+      ],
+      answer: 0
+    },
+    {
+      question: "Prinsip mana yang menekankan penyelarasan elemen untuk menciptakan keteraturan?",
+      choices: [
+        "Keseimbangan",
+        "Penjajaran",
+        "Pengulangan",
+        "Kedekatan"
+      ],
+      answer: 1
+    },
+    {
+      question: "Dalam komunikasi, apa arti dari 'mendengarkan aktif'?",
+      choices: [
+        "Hanya mendengar kata-kata tanpa memberikan respons.",
+        "Mendengarkan dengan seksama dan memberikan umpan balik.",
+        "Mengabaikan pembicara untuk menyiapkan jawaban.",
+        "Menunggu giliran untuk berbicara."
+      ],
+      answer: 1
+    },
+    {
+      question: "Apa arti prinsip 'Kedekatan' dalam desain?",
+      choices: [
+        "Menempatkan item yang berhubungan saling dekat.",
+        "Menggunakan banyak ruang kosong.",
+        "Membuat elemen dengan warna berbeda.",
+        "Meratakan teks ke kanan."
+      ],
+      answer: 0
+    },
+    {
+      question: "Dalam komunikasi, istilah ‘umpan balik’ berarti:",
+      choices: [
+        "Mengabaikan pesan yang diterima.",
+        "Memberi respons dengan pertanyaan atau komentar.",
+        "Mengulangi pesan secara tepat.",
+        "Mengubah topik pembicaraan."
+      ],
+      answer: 1
+    }
+  ];
+
+  let currentIndex = 0;
+  let userAnswers = new Array(questions.length).fill(null);
+
+  const startBtn = document.getElementById('start-btn');
+  const restartBtn = document.getElementById('restart-btn');
+  const questionEl = document.getElementById('question');
+  const choicesEl = document.getElementById('choices');
+  const quizContainer = document.getElementById('quiz-container');
+  const startContainer = document.getElementById('start-container');
+  const scoreContainer = document.getElementById('score-container');
+  const scoreText = document.getElementById('score-text');
+  const feedbackText = document.getElementById('feedback-text');
+  const prevBtn = document.getElementById('prev-btn');
+  const nextBtn = document.getElementById('next-btn');
+
+  function startQuiz() {
+    startContainer.style.display = 'none';
+    quizContainer.style.display = 'flex';
+    scoreContainer.style.display = 'none';
+    currentIndex = 0;
+    userAnswers.fill(null);
+    showQuestion();
+  }
+
+  function showQuestion() {
+    const q = questions[currentIndex];
+    questionEl.textContent = `Soal ${currentIndex+1}. ${q.question}`;
+    choicesEl.innerHTML = '';
+
+    q.choices.forEach((choice, index) => {
+      const btn = document.createElement('button');
+      btn.classList.add('choice-btn');
+      btn.textContent = choice;
+      btn.setAttribute('data-index', index);
+      if (userAnswers[currentIndex] === index) {
+        btn.classList.add('selected');
+      }
+      btn.addEventListener('click', () => {
+        selectAnswer(index, btn);
+      });
+      choicesEl.appendChild(btn);
+    });
+
+    prevBtn.disabled = currentIndex === 0;
+    nextBtn.disabled = userAnswers[currentIndex] === null;
+    nextBtn.textContent = currentIndex === questions.length - 1 ? "Selesai" : "Berikutnya";
+  }
+
+  function selectAnswer(index, btnClicked) {
+    userAnswers[currentIndex] = index;
+    // Remove selected class from all choices
+    Array.from(choicesEl.children).forEach(btn => btn.classList.remove('selected'));
+    btnClicked.classList.add('selected');
+    nextBtn.disabled = false;
+  }
+
+  function showScore() {
+    quizContainer.style.display = 'none';
+    scoreContainer.style.display = 'flex';
+
+    let correctCount = 0;
+    questions.forEach((q, i) => {
+      if (userAnswers[i] === q.answer) {
+        correctCount++;
+      }
+    });
+
+    scoreText.textContent = `${correctCount} dari ${questions.length}`;
+
+    // Berikan umpan balik berdasarkan skor
+    let feedback = '';
+    const percentage = (correctCount / questions.length) * 100;
+    if (percentage === 100) {
+      feedback = "Luar biasa! Kamu ahli dalam desain dan komunikasi!";
+    } else if (percentage >= 80) {
+      feedback = "Bagus sekali! Pengetahuanmu sudah kuat.";
+    } else if (percentage >= 50) {
+      feedback = "Usaha yang baik! Terus belajar ya.";
+    } else {
+      feedback = "Terus berlatih! Desain dan komunikasi perlu waktu.";
+    }
+    feedbackText.textContent = feedback;
+  }
+
+  startBtn.addEventListener('click', startQuiz);
+
+  prevBtn.addEventListener('click', () => {
+    if (currentIndex > 0) {
+      currentIndex--;
+      showQuestion();
+    }
+  });
+  nextBtn.addEventListener('click', () => {
+    if (userAnswers[currentIndex] === null) return;
+    if (currentIndex < questions.length - 1) {
+      currentIndex++;
+      showQuestion();
+    } else {
+      showScore();
+    }
+  });
+
+  restartBtn.addEventListener('click', () => {
+    startContainer.style.display = 'flex';
+    quizContainer.style.display = 'none';
+    scoreContainer.style.display = 'none';
+  });
+</script>
+</body>
+</html>
+</content>
+</create_file>
+
